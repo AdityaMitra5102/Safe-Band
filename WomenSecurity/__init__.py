@@ -89,23 +89,12 @@ def genUid():
 
 
 def sendEmail(eml, name, loc):
-    #message = Mail(
-    #    from_email='women2780@gmail.com',
-    #    to_emails=eml,
-    #    subject=name+' is in a danger.',
-    #    html_content=name+' is in a danger. Location https://google.com/maps?q='+loc)
-    #try:
-    #    sg = SendGridAPIClient(
-    #        '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')
-    #    response = sg.send(message)
-    #except Exception as e:
-    #    pass
     payload={'eml':eml, 'nm': name, 'loc': loc}
     r=requests.get('http://20.106.248.18/',params=payload)
     print(r.text)
 
 def sendTelegram(name, loc):
-    url='https://api.telegram.org/bot5065626365:AAGaixqWH8xAGaRZpIP-mLykCgz8DDL7YdY/sendMessage'
+    url='https://api.telegram.org/[REDACTED]/sendMessage'
     msg=name + ' is in danger. http://www.google.com/maps/place/'+loc
     chatid='-601451858'
     param={'chat_id':chatid, 'text':msg}
