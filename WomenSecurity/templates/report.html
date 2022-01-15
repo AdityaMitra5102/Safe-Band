@@ -1,0 +1,39 @@
+<HTML>
+<script>
+var x = "https://safeband.azurewebsites.net/api/WomenSecurity/?page=thank"
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+	console.log("Geolocation is not supported by this browser.");
+	x=x+"&loc=0,0";
+	console.log(x);
+	window.location.href=x;
+
+  }
+}
+
+function showPosition(position) {
+  x=x+"&loc="+position.coords.latitude +","+position.coords.longitude;
+  console.log(x);
+  window.location.href=x;
+}
+
+function getId() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const id = urlParams.get('id')
+	x=x+"&id="+id
+}
+
+window.onload = function(){
+	getId();
+	getLocation();
+
+	console.log(x);
+	
+}
+
+
+</script>
+</HTML>

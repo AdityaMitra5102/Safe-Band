@@ -1,0 +1,53 @@
+<HTML>
+<BODY>
+Tap your phone on the band
+
+<button id="writeButton" hidden>Write</button>
+</BODY>
+<script>
+log = console.log;
+
+if (!("NDEFReader" in window))
+  console.log(
+    "Web NFC is not available.\n" +
+      'Please make sure the "Experimental Web Platform features" flag is enabled on Android.'
+  );
+</script>
+<script>
+writeButton.addEventListener("click", async () => {
+  log("User clicked write button");
+
+  try {
+    const ndef = new NDEFReader();
+	await ndef.scan();
+    log("> Scan started");
+
+    ndef.addEventListener("readingerror", () => {
+      log("Argh! Cannot read data from the NFC tag. Try another one?");
+    });
+
+    ndef.addEventListener("reading", ({ message, serialNumber }) => {
+      log("Read");
+    });
+    await ndef.write({
+    records: [{ recordType: "url", data: "https://safeband.azurewebsites.net/api/WomenSecurity/?page=report&id={{uid}}"},
+    { recordType: "text", data: "I need help. Please open the link to report."}]
+    });
+    setTimeout(function(){
+		console.log("delay");
+   },1000); //delay is in milliseconds 
+
+    log("> Message written");
+    window.location.href="https://safeband.azurewebsites.net/api/WomenSecurity/?page=success";
+  } catch (error) {
+    log("Argh! " + error);
+    window.location.href="https://safeband.azurewebsites.net/api/WomenSecurity/?page=error";
+  }
+});
+</script>
+<script>
+window.onload=function(){
+  document.getElementById("writeButton").click();
+};
+</script>
+</HTML>
